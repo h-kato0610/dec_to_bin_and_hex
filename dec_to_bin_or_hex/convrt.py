@@ -4,7 +4,7 @@ from abc import ABCMeta, abstractmethod
 class Converter(metaclass=ABCMeta):
     @abstractmethod
     def convert(self):
-        raise NotImplementedError
+        raise NotImplementedError()
 
 class BinaryConverter(Converter):
     def __init__(self, decimal):
