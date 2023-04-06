@@ -6,7 +6,7 @@ class Converter(metaclass=ABCMeta):
     def convert(self):
         raise NotImplementedError()
 
-class BinaryConverter(Converter):
+class DecToBinaryConverter(Converter):
     def convert(self, binary):
         b_max = len(binary) - 1
         result = 0
