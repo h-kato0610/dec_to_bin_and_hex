@@ -36,21 +36,27 @@ class DecToHexConverter(Converter):
 
     def convert(self, n_hex):
         h_max = len(n_hex) - 1
-        result = 0
+        calc_hex = int(n_hex)
+        result = []
 
-        for i in range(len(n_hex)):
-            tmp = n_hex[h_max - i] 
-            result_tmp = 0
+        while True:
+            mod = calc_hex % self.weight
+            mod_to_str = ''
 
-            if tmp in self.hex_dict.keys():
-                hex_num = int(self.hex_dict[tmp])
-                result_tmp = hex_num * (self.weight ** i)
+            if mod < 10:
+                mod_to_str = str(mod)
             else:
-                result_tmp = int(tmp) * (self.weight ** i)
+                mod_to_str = self.hex_dict[str(mod)]
 
-            result = result + result_tmp
+            result.append(mod_to_str)
 
-        return hex(int(n_hex))
+            calc_hex = calc_hex // self.weight
+
+            if calc_hex <= 0:
+                break
+
+        result.reverse()
+        return ''.join(result)
 
 def main():
     c = str(sys.argv[1])
