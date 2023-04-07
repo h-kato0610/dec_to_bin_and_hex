@@ -9,17 +9,17 @@ class Converter(metaclass=ABCMeta):
 class BinaryConverter(Converter):
     def __init__(self, decimal):
         self.decimal = decimal
+        self.weight = 2
 
     def convert(self):
         """
         decimal to bin 
         """
         result = []
-        binary = 2
         while True:
-            mod_to_str = str(self.decimal % binary)
+            mod_to_str = str(self.decimal % self.weight)
             result.append(mod_to_str)
-            self.decimal = self.decimal // binary
+            self.decimal = self.decimal // self.weight
 
             if self.decimal == 0:
                 break
@@ -29,33 +29,32 @@ class BinaryConverter(Converter):
 class HexConverter(Converter):
     def __init__(self, decimal):
         self.decimal = decimal
+        self.weight = 16
+        self.hex_dict = {
+            '10': 'A',
+            '11': 'B',
+            '12': 'C',
+            '13': 'D',
+            '14': 'E',
+            '15': 'F'
+        }
 
     def convert(self):
         """
         decimal to hex
         """
         result = []
-        hex = 16
         while True:
-            mod = self.decimal % hex
+            mod = self.decimal % self.weight
             mod_to_str = None
             if mod < 10:
                 mod_to_str = str(mod)
-            elif mod == 10:
-                mod_to_str = 'A'
-            elif mod == 11:
-                mod_to_str = 'B'
-            elif mod == 12:
-                mod_to_str = 'C'
-            elif mod == 13:
-                mod_to_str = 'D'
-            elif mod == 14:
-                mod_to_str = 'E'
-            elif mod == 15:
-                mod_to_str = 'F'
+            else:
+                mod_to_str = self.hex_dict[str(mod)]
+
             result.append(mod_to_str)
 
-            self.decimal = self.decimal // hex
+            self.decimal = self.decimal // self.weight
 
             if self.decimal == 0:
                 break
