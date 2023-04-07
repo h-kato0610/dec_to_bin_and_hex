@@ -6,7 +6,7 @@ class Converter(metaclass=ABCMeta):
     def convert(self):
         raise NotImplementedError()
 
-class DecToBinaryConverter(Converter):
+class BinaryToDecConverter(Converter):
     def __init__(self):
         self.weight = 2
 
@@ -22,51 +22,42 @@ class DecToBinaryConverter(Converter):
 
         return result
 
-class DecToHexConverter(Converter):
+class HexToDecConverter(Converter):
     def __init__(self):
         self.weight = 16
         self.hex_dict = {
-            '10': 'A',
-            '11': 'B',
-            '12': 'C',
-            '13': 'D',
-            '14': 'E',
-            '15': 'F',
+            'A': '10',
+            'B': '11',
+            'C': '12',
+            'D': '13',
+            'E': '14',
+            'F': '15',
         }
 
     def convert(self, n_hex):
         h_max = len(n_hex) - 1
-        calc_hex = int(n_hex)
-        result = []
+        result = 0
 
-        while True:
-            mod = calc_hex % self.weight
-            mod_to_str = ''
+        for i in range(len(n_hex)):
+            cnt = int(i)
+            current_num = n_hex[h_max - cnt]
 
-            if mod < 10:
-                mod_to_str = str(mod)
-            else:
-                mod_to_str = self.hex_dict[str(mod)]
+            if current_num.upper() in self.hex_dict.keys():
+                current_num = self.hex_dict[current_num.upper()]
 
-            result.append(mod_to_str)
+            result = result + int(current_num) * (self.weight ** cnt)
 
-            calc_hex = calc_hex // self.weight
-
-            if calc_hex <= 0:
-                break
-
-        result.reverse()
-        return ''.join(result)
+        return result
 
 def main():
     c = str(sys.argv[1])
     n = str(sys.argv[2])
 
     if c == 'b':
-        binary_converter = DecToBinaryConverter()
+        binary_converter = BinaryToDecConverter()
         result = binary_converter.convert(n)
     elif c == 'h':
-        hex_converter = DecToHexConverter()
+        hex_converter = HexToDecConverter()
         result = hex_converter.convert(n)
     else:
         print('First Arg <b> or <h> Second Arg <Num> : python convert.py b 10 or python convert.py h 1f')
