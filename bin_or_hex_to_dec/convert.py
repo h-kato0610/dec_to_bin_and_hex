@@ -7,14 +7,18 @@ class Converter(metaclass=ABCMeta):
         raise NotImplementedError()
 
 class DecToBinaryConverter(Converter):
+    def __init__(self):
+        self.weight = 2
+
     def convert(self, binary):
         b_max = len(binary) - 1
         result = 0
 
         for i in range(len(binary)):
             cnt = int(i)
-            if binary[b_max - cnt] == '1':
-                result = result + 1 * (2 ** cnt)
+            current_num = binary[b_max - cnt]
+            if current_num == '1':
+                result = result + current_num * (self.weight ** cnt)
 
         return result
 
